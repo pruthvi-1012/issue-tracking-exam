@@ -5,25 +5,25 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import au.com.domain.demo.model.User;
+import au.com.domain.demo.model.Issue;
 
 @Repository
-public class UserServices {
+public class IssueServices {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public User findById(long id){
+    public Issue findById(long id){
         return jdbcTemplate.queryForObject("select * from  ISSUE_TRACKER.USER where id=?", new Object[] {
             id
         },
-        new BeanPropertyRowMapper < User > (User.class));
+        new BeanPropertyRowMapper < Issue > (Issue.class));
     }
 
-    public User insertUser(User user){
+    public Issue insertUser(Issue issue){
         return jdbcTemplate.queryForObject("insert into ISSUE_TRACKER.USER (USERNAME) " + "values (?)", new Object[] {
-            user.getUserName()
+            issue.getTitle()
         },
-        new BeanPropertyRowMapper < User > (User.class));
+        new BeanPropertyRowMapper < Issue > (Issue.class));
     }
 }
