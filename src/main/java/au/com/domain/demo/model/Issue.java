@@ -1,8 +1,14 @@
 package au.com.domain.demo.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Issue {
+    @Id
+    @GeneratedValue
     private Long id;
     private String title;
     private String description;
