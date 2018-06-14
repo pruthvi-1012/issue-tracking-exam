@@ -2,7 +2,6 @@ server:
   port: 8080
   contextPath: /v1
 
-
 spring:
   h2:
     console:

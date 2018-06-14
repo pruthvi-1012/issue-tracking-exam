@@ -8,6 +8,7 @@ jspm_packages
 # user IDE auto-files
 .idea/
 
+
 # Sectrets & Keys
 .env
 
@@ -24,3 +25,5 @@ jspm_packages
 bin/
 build/
 .vscode/settings.json
+
+.sts4-cache/

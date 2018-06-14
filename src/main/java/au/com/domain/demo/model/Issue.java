@@ -1,11 +1,13 @@
 package au.com.domain.demo.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
+@Table (name = "ISSUE", schema = "ISSUE_TRACKER")
 public class Issue {
     @Id
     @GeneratedValue
