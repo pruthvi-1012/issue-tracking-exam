@@ -11,11 +11,15 @@ jspm_packages
 # Sectrets & Keys
 .env
 
-build/**
+
 .gradle
-bin/
-.DS_store
+.DS_Store
 .settings
+.classpath
+.project
+
 *.class
 
+.settings/
 bin/
+build/
