@@ -17,3 +17,5 @@ bin/
 .DS_store
 .settings
 *.class
+
+bin/
