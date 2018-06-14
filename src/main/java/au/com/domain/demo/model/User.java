@@ -14,10 +14,10 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getName() {
+    public String getUserName() {
         return userName;
     }
-    public void setName(String userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
