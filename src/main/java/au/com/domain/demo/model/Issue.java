@@ -24,13 +24,18 @@ public class Issue {
         super();
     }
 
-
-    @Override
-    public String toString() {
-        return String.format("Issue [id=%s, name=%s]", id, title);
+    public Issue(Long id, String title, String description, String status, Long reporter, Long asignee, Date created, Date completed) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.reporter = reporter;
+        this.asignee = asignee;
+        this.created = created;
+        this.completed = completed;
     }
 
-    
     public Long getId() {
         return id;
     }
