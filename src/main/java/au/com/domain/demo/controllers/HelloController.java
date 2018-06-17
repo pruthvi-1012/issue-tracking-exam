@@ -7,6 +7,8 @@ import au.com.domain.demo.services.UserServices;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 public class HelloController {
@@ -24,7 +27,7 @@ public class HelloController {
     @Autowired
     IssueServices issueServices;
 
-	@GetMapping("/issues")
+	@GetMapping("/issue/all")
 	public List<Issue> retrieveAllIssues() {
 		return issueServices.findAll();
     }
@@ -61,8 +64,14 @@ public class HelloController {
     issue.setCreated(issueDetails.getCreated());
     issue.setCompleted(issueDetails.getCompleted());
 
-    Issue updateIssue = issueServices.save(issue);
-    return updateIssue;
+    Issue updatedIssue = issueServices.save(issue);
+    return updatedIssue;
 }
+
+    @RequestMapping(value = "/issuesPeagable", method = RequestMethod.GET)
+	Page<Issue> list( Pageable pageable ){
+		Page<Issue> issues = issueServices.findAll(pageable);
+	return issues;
+	} 
 
 }
