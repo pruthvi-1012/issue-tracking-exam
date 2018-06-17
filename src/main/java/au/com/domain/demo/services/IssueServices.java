@@ -29,7 +29,6 @@ import au.com.domain.demo.model.Issue;
 //     }
 // }
 
-@Repository
-public interface IssueServices extends JpaRepository<Issue, Long>{
+// public interface IssueServices implements IssueServiceInterface{
 
-}
+// }

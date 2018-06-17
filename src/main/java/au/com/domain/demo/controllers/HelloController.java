@@ -2,13 +2,17 @@ package au.com.domain.demo.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 import au.com.domain.demo.model.Issue;
-import au.com.domain.demo.services.IssueServices;
+import au.com.domain.demo.repository.IssueRepository;
+// import au.com.domain.demo.services.IssueServices;
 import au.com.domain.demo.services.UserServices;
+
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,35 +29,35 @@ public class HelloController {
     
     // UserServices userServices;
     @Autowired
-    IssueServices issueServices;
+    IssueRepository issueRepository;
 
 	@GetMapping("/issue/all")
 	public List<Issue> retrieveAllIssues() {
-		return issueServices.findAll();
+		return issueRepository.findAll();
     }
 
     @GetMapping("/issue/{id}")
     public Issue retrieveIssueById(@PathVariable(value = "id") Long id) {
-        return issueServices.findOne(id);
+        return issueRepository.findOne(id);
     }
     
     @DeleteMapping("/issue/{id}")
     public ResponseEntity<?> deleteNote(@PathVariable(value = "id") Long id) {
-        Issue issue = issueServices.findOne(id);
-        issueServices.delete(issue);
+        Issue issue = issueRepository.findOne(id);
+        issueRepository.delete(issue);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/issue")
     public Issue createIssue(@Valid @RequestBody Issue issue) {
-        return issueServices.save(issue);   
+        return issueRepository.save(issue);   
     }
 
     @PutMapping("/issue/{id}")
     public Issue updateNote(@PathVariable(value = "id") Long id,
                                         @Valid @RequestBody Issue issueDetails) {
 
-    Issue issue = issueServices.findOne(id);
+    Issue issue = issueRepository.findOne(id);
   //          .orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
 
     issue.setTitle(issueDetails.getTitle());
@@ -64,14 +68,39 @@ public class HelloController {
     issue.setCreated(issueDetails.getCreated());
     issue.setCompleted(issueDetails.getCompleted());
 
-    Issue updatedIssue = issueServices.save(issue);
+    Issue updatedIssue = issueRepository.save(issue);
     return updatedIssue;
 }
 
     @RequestMapping(value = "/issuesPeagable", method = RequestMethod.GET)
 	Page<Issue> list( Pageable pageable ){
-		Page<Issue> issues = issueServices.findAll(pageable);
+		Page<Issue> issues = issueRepository.findAll(pageable);
 	return issues;
-	} 
+    }
+    
+    @GetMapping(value = "/issuesForAsignee/{asigneeId}")
+	List<Issue> issuesForAsignee(@PathVariable(value = "asigneeId") Long id){
+		List<Issue> issues = issueRepository.findByAsignee(id);
+	return issues;
+    }
+    
+    @GetMapping(value = "/issues/{startDate}/{endDate}")
+    List<Issue> issuesBetweenDateCreated(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable(value = "startDate") Date startDate, 
+                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable(value = "endDate") Date endDate ){
+        List<Issue> issues = issueRepository.findByCreatedBetween(startDate, endDate);
+    return issues;
+    }
+
+    // @GetMapping(value = "/issue/ascending")
+	// Page<Issue> getByCreatedDateAssending(Pageable pageable){
+	// 	Page<Issue> issues = issueRepository.findAllOrderByCreatedAsc(pageable);
+	// return issues;
+    // }
+
+    // @GetMapping(value = "/issue/descending")
+	// Page<Issue> getByCreatedDateDescending(Pageable pageable){
+	// 	Page<Issue> issues = issueRepository.findAllOrderByCreatedDesc(pageable);
+	// return issues;
+    //}
 
 }
