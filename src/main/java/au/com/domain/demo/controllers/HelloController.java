@@ -2,6 +2,7 @@ package au.com.domain.demo.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.Issue;
 import au.com.domain.demo.model.User;
 import au.com.domain.demo.repository.CommentRepository;
@@ -11,6 +12,7 @@ import au.com.domain.demo.daos.IssueDao;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -52,26 +54,42 @@ public class HelloController {
 
         List<Issue> listOfIssues = issueRepository.findAll();
 
-        for (Issue issue : listOfIssues) {
-            IssueDao issueDao = new IssueDao();
+        // for (Issue issue : listOfIssues) {
+        //     IssueDao issueDao = new IssueDao(issue.getId(), issue.getTitle(), issue.getDescription(), issue.getStatus(), issue.getCreated(), issue.getCompleted());
+        //     issueDao.setId(issue.getId());
+        //     issueDao.setReporter(userRepository.findOne(issue.getReporter().getId()));
+
+        //     if(issue.getReporter() != null) {
+        //         issueDao.setAssignee(userRepository.findOne(issue.getReporter().getId()));
+        //     }
+
+        //     if(issue.getAssignee() != null) {
+        //         issueDao.setAssignee(userRepository.findOne(issue.getAssignee().getId()));
+        //     }
+
+        //     issues.add(issueDao);
+        // }
+
+        listOfIssues.forEach(issue -> {
+            IssueDao issueDao = new IssueDao(issue.getId(), issue.getTitle(), issue.getDescription(), issue.getStatus(), issue.getCreated(), issue.getCompleted());
             issueDao.setId(issue.getId());
             issueDao.setReporter(userRepository.findOne(issue.getReporter().getId()));
+
+            if(issue.getReporter() != null) {
+                issueDao.setAssignee(userRepository.findOne(issue.getReporter().getId()));
+            }
 
             if(issue.getAssignee() != null) {
                 issueDao.setAssignee(userRepository.findOne(issue.getAssignee().getId()));
             }
-            issueDao.setDescription(issue.getDescription());
-            issueDao.setCreated(issue.getCreated());
-            issueDao.setCompleted(issue.getCompleted());
-            issueDao.setStatus(issue.getStatus());
-            issueDao.setTitle(issue.getTitle());
+
+            Set<Comment> comments = commentRepository.findByIssue(issue.getId());
+
+            issueDao.setComments(comments != null ? comments : null);
 
             issues.add(issueDao);
-        }
+        });
 
-        // listOfIssues.forEach(issue -> {
- 
-        // });
 
  		return issues;
     }

@@ -3,6 +3,7 @@ package au.com.domain.demo.daos;
 import java.util.Date;
 import java.util.Set;
 
+import antlr.collections.List;
 import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.User;
 
