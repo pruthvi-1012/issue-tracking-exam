@@ -53,17 +53,13 @@ public class HelloController {
         List<Issue> listOfIssues = issueRepository.findAll();
 
         for (Issue issue : listOfIssues) {
-
-
-           // User assignee = userRepository.findOne(issue.getAssignee().getId());
-            User reporter = userRepository.findOne(issue.getReporter().getId());
             IssueDao issueDao = new IssueDao();
             issueDao.setId(issue.getId());
-          //  issueDao.setAssignee(assignee);
-            issueDao.setReporter(reporter);
-            // issueDao.setAssignee(userRepository.
-           // issueDao.setReporter(userRepository.findById(issue.getReporter().getId()));
-            //issueDao.setComments(commentRepository.findAll(issue.getId()))
+            issueDao.setReporter(userRepository.findOne(issue.getReporter().getId()));
+
+            if(issue.getAssignee() != null) {
+                issueDao.setAssignee(userRepository.findOne(issue.getAssignee().getId()));
+            }
             issueDao.setDescription(issue.getDescription());
             issueDao.setCreated(issue.getCreated());
             issueDao.setCompleted(issue.getCompleted());

@@ -16,7 +16,21 @@ public class IssueDao {
     private User reporter;
     private Date created;
     private Date completed;
-    private Set<Comment> comments;
+	private Set<Comment> comments;
+	
+	public IssueDao() {
+        super();
+	}
+	
+	public IssueDao(Long id, String title, String description, String status, Date created, Date completed) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.status = status;
+		this.created = created;
+		this.completed = completed;
+    }
 
 	public Long getId() {
 		return id;
