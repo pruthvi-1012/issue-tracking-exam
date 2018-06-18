@@ -31,12 +31,10 @@ public class Issue {
 	
 	@OneToOne(targetEntity=User.class)
 	@JoinColumn(name="reporter")
-	@MapsId
 	private User reporter;
 	
 	@OneToOne(targetEntity=User.class)
 	@JoinColumn(name="assignee")
-	@MapsId
 	private User assignee;
 
 	@Temporal(TemporalType.DATE)

@@ -27,3 +27,4 @@ build/
 .vscode/settings.json
 
 .sts4-cache/
+.vscode/launch.json

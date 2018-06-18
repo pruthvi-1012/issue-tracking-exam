@@ -1,13 +1,20 @@
 package au.com.domain.demo.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
+
 import au.com.domain.demo.model.Issue;
+import au.com.domain.demo.repository.CommentRepository;
 import au.com.domain.demo.repository.IssueRepository;
 // import au.com.domain.demo.services.IssueServices;
 import au.com.domain.demo.services.UserServices;
+import au.com.domain.demo.daos.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,14 +33,48 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RestController
 public class HelloController {
 
-    
-    // UserServices userServices;
+	// UserServices userServices;
     @Autowired
     IssueRepository issueRepository;
+
+    @Autowired
+    UserServices userRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
 	@GetMapping("/issue/all")
 	public List<Issue> retrieveAllIssues() {
 		return issueRepository.findAll();
+    }
+
+    @GetMapping("/issues/all")
+	public Set<IssueDao> retrieveAllIssues1() {
+
+        Set<IssueDao> issues = new HashSet<>();
+
+        List<Issue> listOfIssues = issueRepository.findAll();
+
+        for (Issue issue : listOfIssues) {
+            IssueDao issueDao = new IssueDao();
+            issueDao.setId(issue.getId());
+            issueDao.setAssignee(userRepository.findOne(issue.getAssignee().getId()));
+           // issueDao.setReporter(userRepository.findById(issue.getReporter().getId()));
+            //issueDao.setComments(commentRepository.findAll(issue.getId()))
+            issueDao.setDescription(issue.getDescription());
+            issueDao.setCreated(issue.getCreated());
+            issueDao.setCompleted(issue.getCompleted());
+            issueDao.setStatus(issue.getStatus());
+            issueDao.setTitle(issue.getTitle());
+
+            issues.add(issueDao);
+        }
+
+        // listOfIssues.forEach(issue -> {
+ 
+        // });
+
+ 		return issues;
     }
 
     @GetMapping("/issue/{id}")
