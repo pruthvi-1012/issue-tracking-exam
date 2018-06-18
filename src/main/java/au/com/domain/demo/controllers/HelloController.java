@@ -3,13 +3,11 @@ package au.com.domain.demo.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import au.com.domain.demo.model.Issue;
+import au.com.domain.demo.model.User;
 import au.com.domain.demo.repository.CommentRepository;
 import au.com.domain.demo.repository.IssueRepository;
-// import au.com.domain.demo.services.IssueServices;
-import au.com.domain.demo.services.UserServices;
-import au.com.domain.demo.daos.*;
-
-import java.util.ArrayList;
+import au.com.domain.demo.repository.UserRepository;
+import au.com.domain.demo.daos.IssueDao;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -33,12 +31,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RestController
 public class HelloController {
 
-	// UserServices userServices;
     @Autowired
     IssueRepository issueRepository;
 
     @Autowired
-    UserServices userRepository;
+    UserRepository userRepository;
 
     @Autowired
     CommentRepository commentRepository;
@@ -56,9 +53,15 @@ public class HelloController {
         List<Issue> listOfIssues = issueRepository.findAll();
 
         for (Issue issue : listOfIssues) {
+
+
+           // User assignee = userRepository.findOne(issue.getAssignee().getId());
+            User reporter = userRepository.findOne(issue.getReporter().getId());
             IssueDao issueDao = new IssueDao();
             issueDao.setId(issue.getId());
-            issueDao.setAssignee(userRepository.findOne(issue.getAssignee().getId()));
+          //  issueDao.setAssignee(assignee);
+            issueDao.setReporter(reporter);
+            // issueDao.setAssignee(userRepository.
            // issueDao.setReporter(userRepository.findById(issue.getReporter().getId()));
             //issueDao.setComments(commentRepository.findAll(issue.getId()))
             issueDao.setDescription(issue.getDescription());

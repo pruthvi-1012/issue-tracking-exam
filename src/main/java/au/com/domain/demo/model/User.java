@@ -13,8 +13,7 @@ public class User {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "userName")
+    
     private String userName;
     
     public User() {

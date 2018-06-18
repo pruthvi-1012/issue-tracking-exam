@@ -7,7 +7,6 @@ import au.com.domain.demo.model.Issue;
 import au.com.domain.demo.repository.CommentRepository;
 import au.com.domain.demo.repository.IssueRepository;
 // import au.com.domain.demo.services.IssueServices;
-import au.com.domain.demo.services.UserServices;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
