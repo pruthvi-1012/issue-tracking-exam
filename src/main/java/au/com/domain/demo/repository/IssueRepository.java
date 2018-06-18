@@ -11,7 +11,7 @@ import au.com.domain.demo.model.Issue;
 
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Long>{
-    List<Issue> findByAsignee(Long asignee);
+    List<Issue> findByAssignee(Long asignee);
     List<Issue> findByReporter(Long reporter);
     List<Issue> findByStatus(Long status);
     List<Issue> findByCreatedBetween(Date start, Date end);

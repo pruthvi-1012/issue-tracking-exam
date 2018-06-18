@@ -1,7 +1,20 @@
 package au.com.domain.demo.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "USER", schema = "ISSUE_TRACKER")
 public class User {
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "userName")
     private String userName;
     
     public User() {
@@ -19,10 +32,5 @@ public class User {
     }
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Student [id=%s, name=%s]", id, userName);
     }
 }

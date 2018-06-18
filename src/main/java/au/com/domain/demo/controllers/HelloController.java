@@ -62,7 +62,7 @@ public class HelloController {
 
     issue.setTitle(issueDetails.getTitle());
     issue.setDescription(issueDetails.getDescription());
-    issue.setReporter(issueDetails.getAsignee());
+    issue.setReporter(issueDetails.getAssignee());
     issue.setReporter(issueDetails.getReporter());
     issue.setStatus(issueDetails.getStatus());
     issue.setCreated(issueDetails.getCreated());
@@ -78,9 +78,9 @@ public class HelloController {
 	return issues;
     }
     
-    @GetMapping(value = "/issuesForAsignee/{asigneeId}")
-	List<Issue> issuesForAsignee(@PathVariable(value = "asigneeId") Long id){
-		List<Issue> issues = issueRepository.findByAsignee(id);
+    @GetMapping(value = "/issuesForAssignee/{assigneeId}")
+	List<Issue> issuesForAssignee(@PathVariable(value = "assigneeId") Long id){
+		List<Issue> issues = issueRepository.findByAssignee(id);
 	return issues;
     }
     
