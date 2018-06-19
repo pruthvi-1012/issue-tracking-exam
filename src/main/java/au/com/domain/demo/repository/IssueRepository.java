@@ -8,11 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import au.com.domain.demo.model.Issue;
+import au.com.domain.demo.model.User;
 
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Long>{
-    List<Issue> findByAssignee(Long asignee);
-    List<Issue> findByReporter(Long reporter);
+    List<Issue> findByAssignee(User asignee);
+    List<Issue> findByReporter(User reporter);
     List<Issue> findByStatus(Long status);
     List<Issue> findByCreatedBetween(Date start, Date end);
    // Page<Issue> findAllOrderByCreatedAsc(Pageable pageable);

@@ -47,9 +47,8 @@ public class Issue {
         super();
     }
 
-    public Issue(Long id, String title, String description, String status, User reporter, User assignee, Date created, Date completed) {
+    public Issue(String title, String description, String status, User reporter, User assignee, Date created, Date completed) {
         super();
-        this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;

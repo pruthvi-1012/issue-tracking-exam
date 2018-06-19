@@ -1,12 +1,11 @@
-package au.com.domain.demo.daos;
+package au.com.domain.demo.dto;
 
 import java.util.Date;
-import java.util.Set;
 import java.util.List;
 import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.User;
 
-public class IssueDao {
+public class IssueDto {
 
     private Long id;
     private String title;
@@ -18,11 +17,11 @@ public class IssueDao {
     private Date completed;
 	private List<Comment> comments;
 	
-	public IssueDao() {
+	public IssueDto() {
         super();
 	}
 	
-	public IssueDao(Long id, String title, String description, String status, Date created, Date completed) {
+	public IssueDto(Long id, String title, String description, String status, Date created, Date completed) {
 		super();
 		this.id = id;
 		this.title = title;
