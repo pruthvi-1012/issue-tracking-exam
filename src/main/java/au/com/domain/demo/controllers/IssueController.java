@@ -8,7 +8,7 @@ import au.com.domain.demo.model.User;
 import au.com.domain.demo.repository.CommentRepository;
 import au.com.domain.demo.repository.IssueRepository;
 import au.com.domain.demo.repository.UserRepository;
-import au.com.domain.demo.services.IssueServices;
+import au.com.domain.demo.services.IssueTrackerService;
 import au.com.domain.demo.dto.IssueDto;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class IssueController {
     CommentRepository commentRepository;
 
     @Autowired
-    IssueServices issueServices;
+    IssueTrackerService issueTrackerService;
 
     @PostMapping("/")
     public Issue createIssue(@Valid @RequestBody IssueDto issueDto) {
@@ -60,7 +60,7 @@ public class IssueController {
     @GetMapping("/{id}")
     public IssueDto retrieveIssueById(@PathVariable(value = "id") Long id) {
         Issue issue = issueRepository.findOne(id);
-        return issueServices.convertIssueToIssueDTO(issue);
+        return issueTrackerService.convertIssueToIssueDTO(issue);
     }
 
     @PutMapping("/issue/{id}")
@@ -98,7 +98,7 @@ public class IssueController {
         List<Issue> issues = issueRepository.findAll();
 
          for (Issue issue : issues) {
-            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
          }
 
  		return new PageImpl<>(issueDtos);
@@ -111,7 +111,7 @@ public class IssueController {
         List<IssueDto> issueDtos = new ArrayList<>();
         
         for (Issue issue : issues) {
-            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
         }
 	    return new PageImpl<>(issueDtos);
     }
@@ -123,7 +123,7 @@ public class IssueController {
         List<IssueDto> issueDtos = new ArrayList<>();
         
         for (Issue issue : issues) {
-            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
         }
 	    return new PageImpl<>(issueDtos);
     }
@@ -134,7 +134,7 @@ public class IssueController {
         List<Issue> issues = issueRepository.findByCreatedBetween(startDate, endDate);
         List<IssueDto> issueDtos = new ArrayList<>();
         for (Issue issue : issues) {
-            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
         }
 	    return new PageImpl<>(issueDtos);
     }
@@ -145,7 +145,7 @@ public class IssueController {
         List<IssueDto> issueDtos = new ArrayList<>();
         
         for (Issue issue : issues) {
-            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
         }
 	    return new PageImpl<>(issueDtos);
     }
@@ -156,7 +156,7 @@ public class IssueController {
         List<IssueDto> issueDtos = new ArrayList<>();
         
         for (Issue issue : issues) {
-            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
         }
 	    return new PageImpl<>(issueDtos);
     }
