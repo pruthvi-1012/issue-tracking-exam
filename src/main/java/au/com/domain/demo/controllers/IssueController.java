@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -138,16 +139,25 @@ public class IssueController {
 	    return new PageImpl<>(issueDtos);
     }
 
-    // @GetMapping(value = "/issue/ascending")
-	// Page<Issue> getByCreatedDateAssending(Pageable pageable){
-	// 	Page<Issue> issues = issueRepository.findAllOrderByCreatedAsc(pageable);
-	// return issues;
-    // }
+    @GetMapping(value = "/created/asc")
+	Page<IssueDto> issuesOrderByCreatedAsc(){
+        List<Issue> issues = issueRepository.findAllByOrderByCreatedAsc();
+        List<IssueDto> issueDtos = new ArrayList<>();
+        
+        for (Issue issue : issues) {
+            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+        }
+	    return new PageImpl<>(issueDtos);
+    }
 
-    // @GetMapping(value = "/issue/descending")
-	// Page<Issue> getByCreatedDateDescending(Pageable pageable){
-	// 	Page<Issue> issues = issueRepository.findAllOrderByCreatedDesc(pageable);
-	// return issues;
-    //}
-
+    @GetMapping(value = "/created/desc")
+	Page<IssueDto> issuesOrderByCreatedDesc(){
+        List<Issue> issues = issueRepository.findAllByOrderByCreatedDesc();
+        List<IssueDto> issueDtos = new ArrayList<>();
+        
+        for (Issue issue : issues) {
+            issueDtos.add(issueServices.convertIssueToIssueDTO(issue));
+        }
+	    return new PageImpl<>(issueDtos);
+    }
 }

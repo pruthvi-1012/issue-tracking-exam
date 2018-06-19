@@ -16,6 +16,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long>{
     List<Issue> findByReporter(User reporter);
     List<Issue> findByStatus(Long status);
     List<Issue> findByCreatedBetween(Date start, Date end);
-   // Page<Issue> findAllOrderByCreatedAsc(Pageable pageable);
-   // Page<Issue> findAllOrderByCreatedDesc(Pageable pageable);
+    List<Issue> findAllByOrderByCreatedAsc();
+    List<Issue> findAllByOrderByCreatedDesc();
 }
