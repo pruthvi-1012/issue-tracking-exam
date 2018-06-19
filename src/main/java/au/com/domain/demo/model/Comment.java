@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,6 +32,7 @@ public class Comment {
 	@JoinColumn(name="user")
 	private User user;
 	
+	@JsonIgnore
 	@ManyToOne(targetEntity=Issue.class)
 	@JoinColumn(name="issue")
 	private Issue issue;
