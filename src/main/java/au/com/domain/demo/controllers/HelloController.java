@@ -54,23 +54,7 @@ public class HelloController {
 
         List<Issue> listOfIssues = issueRepository.findAll();
 
-        // for (Issue issue : listOfIssues) {
-        //     IssueDao issueDao = new IssueDao(issue.getId(), issue.getTitle(), issue.getDescription(), issue.getStatus(), issue.getCreated(), issue.getCompleted());
-        //     issueDao.setId(issue.getId());
-        //     issueDao.setReporter(userRepository.findOne(issue.getReporter().getId()));
-
-        //     if(issue.getReporter() != null) {
-        //         issueDao.setAssignee(userRepository.findOne(issue.getReporter().getId()));
-        //     }
-
-        //     if(issue.getAssignee() != null) {
-        //         issueDao.setAssignee(userRepository.findOne(issue.getAssignee().getId()));
-        //     }
-
-        //     issues.add(issueDao);
-        // }
-
-        listOfIssues.forEach(issue -> {
+         for (Issue issue : listOfIssues) {
             IssueDao issueDao = new IssueDao(issue.getId(), issue.getTitle(), issue.getDescription(), issue.getStatus(), issue.getCreated(), issue.getCompleted());
             issueDao.setId(issue.getId());
             issueDao.setReporter(userRepository.findOne(issue.getReporter().getId()));
@@ -83,12 +67,16 @@ public class HelloController {
                 issueDao.setAssignee(userRepository.findOne(issue.getAssignee().getId()));
             }
 
-            Set<Comment> comments = commentRepository.findByIssue(issue.getId());
+            List<Comment> comments = commentRepository.findByIssue(issue);
 
             issueDao.setComments(comments != null ? comments : null);
 
             issues.add(issueDao);
-        });
+         }
+
+        // listOfIssues.forEach(issue -> {
+
+        // });
 
 
  		return issues;

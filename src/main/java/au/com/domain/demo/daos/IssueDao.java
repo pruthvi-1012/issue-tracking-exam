@@ -2,8 +2,7 @@ package au.com.domain.demo.daos;
 
 import java.util.Date;
 import java.util.Set;
-
-import antlr.collections.List;
+import java.util.List;
 import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.User;
 
@@ -17,7 +16,7 @@ public class IssueDao {
     private User reporter;
     private Date created;
     private Date completed;
-	private Set<Comment> comments;
+	private List<Comment> comments;
 	
 	public IssueDao() {
         super();
@@ -97,11 +96,11 @@ public class IssueDao {
 		this.completed = completed;
 	}
 
-	public Set<Comment> getComments() {
+	public List<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(Set<Comment> comments) {
+	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
 	
