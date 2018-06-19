@@ -9,6 +9,8 @@ import au.com.domain.demo.repository.CommentRepository;
 import au.com.domain.demo.repository.IssueRepository;
 import au.com.domain.demo.repository.UserRepository;
 import au.com.domain.demo.daos.IssueDao;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -48,9 +50,9 @@ public class HelloController {
     }
 
     @GetMapping("/issues/all")
-	public Set<IssueDao> retrieveAllIssues1() {
+	public List<IssueDao> retrieveAllIssues1() {
 
-        Set<IssueDao> issues = new HashSet<>();
+        List<IssueDao> issues = new ArrayList<>();
 
         List<Issue> listOfIssues = issueRepository.findAll();
 
