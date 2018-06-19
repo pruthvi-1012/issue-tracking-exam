@@ -2,6 +2,10 @@ package au.com.domain.demo.dto;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.User;
 
@@ -12,10 +16,14 @@ public class IssueDto {
     private String description;
     private String status;
     private User assignee;
-    private User reporter;
-    private Date created;
+	private User reporter;
+	
+	@Temporal(TemporalType.DATE)
+	private Date created;
+	
+	@Temporal(TemporalType.DATE)
     private Date completed;
-	private List<Comment> comments;
+	private List<CommentDto> comments;
 	
 	public IssueDto() {
         super();
@@ -95,11 +103,11 @@ public class IssueDto {
 		this.completed = completed;
 	}
 
-	public List<Comment> getComments() {
+	public List<CommentDto> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(List<CommentDto> comments) {
 		this.comments = comments;
 	}
 	

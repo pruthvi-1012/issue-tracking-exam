@@ -1,0 +1,57 @@
+package au.com.domain.demo.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import au.com.domain.demo.dto.CommentDto;
+import au.com.domain.demo.dto.IssueDto;
+import au.com.domain.demo.model.Comment;
+import au.com.domain.demo.model.Issue;
+import au.com.domain.demo.repository.CommentRepository;
+import au.com.domain.demo.repository.UserRepository;
+
+@Service("issueTrackerService")
+@Transactional
+public class IssueTrackerServiceImpl implements IssueTrackerService {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Override
+    public IssueDto convertIssueToIssueDTO(Issue issue) {
+
+        IssueDto issueDto = new IssueDto(issue.getId(), issue.getTitle(), issue.getDescription(), issue.getStatus(), issue.getCreated(), issue.getCompleted());
+            issueDto.setReporter(issue.getReporter() != null ? userRepository.findOne(issue.getReporter().getId()) : null);
+            issueDto.setAssignee(issue.getAssignee() != null ? userRepository.findOne(issue.getAssignee().getId()) : null);
+ 
+            List<Comment> comments = commentRepository.findByIssue(issue);
+
+            List<CommentDto> commentDtos = new ArrayList<>();
+
+            if (comments != null) {
+                comments.forEach(c -> {
+                    commentDtos.add(convertCommentToCommentDTO(c));
+                });
+            }
+
+            issueDto.setComments(commentDtos != null ? commentDtos : null);
+
+        return issueDto;
+    }
+
+
+    @Override
+    public CommentDto convertCommentToCommentDTO(Comment comment) {
+        CommentDto commentDto = new CommentDto(comment.getId(), comment.getDescription(), comment.getUser().getId(), comment.getIssue().getId(), comment.getCreated());
+        return commentDto;
+    }
+
+
+}
