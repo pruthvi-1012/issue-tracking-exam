@@ -29,7 +29,7 @@ public class IssueDto {
         super();
 	}
 	
-	public IssueDto(Long id, String title, String description, String status, Date created, Date completed) {
+	public IssueDto(Long id, String title, String description, String status) {
 		super();
 		this.id = id;
 		this.title = title;

@@ -47,15 +47,13 @@ public class Issue {
         super();
     }
 
-    public Issue(String title, String description, String status, User reporter, User assignee, Date created, Date completed) {
+    public Issue(String title, String description, String status, User reporter, User assignee) {
         super();
         this.title = title;
         this.description = description;
         this.status = status;
         this.reporter = reporter;
         this.assignee = assignee;
-        this.created = created;
-        this.completed = completed;
     }
 
     public Long getId() {

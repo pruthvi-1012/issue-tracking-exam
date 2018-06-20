@@ -20,16 +20,17 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/issues")
@@ -52,7 +53,9 @@ public class IssueController {
         User assignee = userRepository.findOne(issueDto.getAssignee().getId());
         User reporter = userRepository.findOne(issueDto.getReporter().getId());
 
-        Issue issue = new Issue(issueDto.getTitle(), issueDto.getDescription(), issueDto.getStatus(), reporter, assignee, issueDto.getCreated(), issueDto.getCompleted());
+        Issue issue = new Issue(issueDto.getTitle(), issueDto.getDescription(), issueDto.getStatus(), reporter, assignee);
+
+        issue.setCreated(new Date());
 
         return issueRepository.save(issue);   
     }
@@ -63,7 +66,7 @@ public class IssueController {
         return issueTrackerService.convertIssueToIssueDTO(issue);
     }
 
-    @PutMapping("/issue/{id}")
+    @PutMapping("/{id}")
     public Issue updateNote(@PathVariable(value = "id") Long id,
                             @Valid @RequestBody IssueDto issueDto) {
 
@@ -77,8 +80,7 @@ public class IssueController {
         issue.setReporter(reporter);
         issue.setReporter(assignee);
         issue.setStatus(issueDto.getStatus());
-        issue.setCreated(issueDto.getCreated());
-        issue.setCompleted(issueDto.getCompleted());
+        issue.setCompleted(new Date());
 
         return issueRepository.save(issue);
     }
@@ -86,22 +88,31 @@ public class IssueController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteNote(@PathVariable(value = "id") Long id) {
         Issue issue = issueRepository.findOne(id);
+        List<Comment> comments = commentRepository.findByIssue(issue);
+
+        for (Comment c : comments) {
+            Comment comment = commentRepository.findOne(c.getId());
+            commentRepository.delete(comment);
+        }
+        
         issueRepository.delete(issue);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/all")
-	public Page<IssueDto> retrieveAllIssuesPeagable() {
+	public Page<IssueDto> retrieveAllIssuesPeagable(Pageable pageable) {
 
         List<IssueDto> issueDtos = new ArrayList<>();
 
-        List<Issue> issues = issueRepository.findAll();
+        Page<Issue> issues = issueRepository.findAll(pageable);
 
          for (Issue issue : issues) {
             issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
          }
+        
+        final int currentTotal=pageable.getOffset() + pageable.getPageSize();
 
- 		return new PageImpl<>(issueDtos);
+ 		return new PageImpl<>(issueDtos,pageable,currentTotal);
     }
     
     @GetMapping(value = "/assignee/{assigneeId}")
@@ -119,7 +130,7 @@ public class IssueController {
     @GetMapping(value = "/reporter/{reporterId}")
 	Page<IssueDto> issuesForReporter(@PathVariable(value = "reporterId") Long id){
         User reporter = userRepository.findById(id);
-        List<Issue> issues = issueRepository.findByAssignee(reporter);
+        List<Issue> issues = issueRepository.findByReporter(reporter);
         List<IssueDto> issueDtos = new ArrayList<>();
         
         for (Issue issue : issues) {
@@ -128,15 +139,20 @@ public class IssueController {
 	    return new PageImpl<>(issueDtos);
     }
     
-    @GetMapping(value = "/issues/{startDate}/{endDate}")
-    Page<IssueDto> issuesBetweenDateCreated(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable(value = "startDate") Date startDate, 
-                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable(value = "endDate") Date endDate ){
-        List<Issue> issues = issueRepository.findByCreatedBetween(startDate, endDate);
-        List<IssueDto> issueDtos = new ArrayList<>();
-        for (Issue issue : issues) {
-            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
+    @GetMapping(value = "/")
+    Page<IssueDto> issuesBetweenDateCreated(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(value = "fromDate") Date fromDate, 
+                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(value = "toDate") Date toDate ) throws Exception{
+        if (fromDate.before(toDate)){
+            List<Issue> issues = issueRepository.findByCreatedBetween(fromDate, toDate);
+            List<IssueDto> issueDtos = new ArrayList<>();
+            for (Issue issue : issues) {
+                issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
+            }
+            return new PageImpl<>(issueDtos);
+        } else {
+            throw new Exception("From date must be earlier than to date");
         }
-	    return new PageImpl<>(issueDtos);
+
     }
 
     @GetMapping(value = "/created/asc")

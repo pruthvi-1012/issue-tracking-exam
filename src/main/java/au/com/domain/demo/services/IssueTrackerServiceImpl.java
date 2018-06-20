@@ -27,10 +27,11 @@ public class IssueTrackerServiceImpl implements IssueTrackerService {
     @Override
     public IssueDto convertIssueToIssueDTO(Issue issue) {
 
-        IssueDto issueDto = new IssueDto(issue.getId(), issue.getTitle(), issue.getDescription(), issue.getStatus(), issue.getCreated(), issue.getCompleted());
+        IssueDto issueDto = new IssueDto(issue.getId(), issue.getTitle(), issue.getDescription(), issue.getStatus());
             issueDto.setReporter(issue.getReporter() != null ? userRepository.findOne(issue.getReporter().getId()) : null);
             issueDto.setAssignee(issue.getAssignee() != null ? userRepository.findOne(issue.getAssignee().getId()) : null);
- 
+            issueDto.setCreated(issue.getCreated());
+            issueDto.setCompleted(issue.getCreated() != null ? issue.getCompleted() : null);
             List<Comment> comments = commentRepository.findByIssue(issue);
 
             List<CommentDto> commentDtos = new ArrayList<>();
