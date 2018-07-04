@@ -35,8 +35,6 @@ public class IssueDto {
 		this.title = title;
 		this.description = description;
 		this.status = status;
-		this.created = created;
-		this.completed = completed;
     }
 
 	public Long getId() {
