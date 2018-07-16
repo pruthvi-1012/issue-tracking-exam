@@ -36,14 +36,7 @@ public class IssueTrackerServiceImpl implements IssueTrackerService {
             issueDto.setCompleted(issue.getCreated() != null ? issue.getCompleted() : null);
             List<Comment> comments = commentRepository.findByIssue(issue);
 
-            List<CommentDto> commentDtos = new ArrayList<>();
-
-            if (comments != null) {
-                commentDtos = comments.stream().map(comment -> { 
-                    return convertCommentToCommentDTO(comment);
-                })
-                .collect(Collectors.toList());
-            }
+            List<CommentDto> commentDtos = comments != null ? comments.stream().map(comment -> convertCommentToCommentDTO(comment)).collect(Collectors.toList()) : null ; 
 
             issueDto.setComments(commentDtos != null ? commentDtos : null);
 
