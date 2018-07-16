@@ -2,6 +2,8 @@ package au.com.domain.demo.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,9 +39,10 @@ public class IssueTrackerServiceImpl implements IssueTrackerService {
             List<CommentDto> commentDtos = new ArrayList<>();
 
             if (comments != null) {
-                comments.forEach(c -> {
-                    commentDtos.add(convertCommentToCommentDTO(c));
-                });
+                commentDtos = comments.stream().map(comment -> { 
+                    return convertCommentToCommentDTO(comment);
+                })
+                .collect(Collectors.toList());
             }
 
             issueDto.setComments(commentDtos != null ? commentDtos : null);
