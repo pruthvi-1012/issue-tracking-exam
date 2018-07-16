@@ -90,6 +90,8 @@ public class IssueController {
         Issue issue = issueRepository.findOne(id);
         List<Comment> comments = commentRepository.findByIssue(issue);
 
+        // Delete all comments related to issue before deleting issue
+
         for (Comment c : comments) {
             Comment comment = commentRepository.findOne(c.getId());
             commentRepository.delete(comment);
