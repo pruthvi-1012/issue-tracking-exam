@@ -1,8 +1,6 @@
 package au.com.domain.demo.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +47,5 @@ public class IssueTrackerServiceImpl implements IssueTrackerService {
         CommentDto commentDto = new CommentDto(comment.getId(), comment.getDescription(), comment.getUser().getId(), comment.getIssue().getId(), comment.getCreated());
         return commentDto;
     }
-
 
 }
