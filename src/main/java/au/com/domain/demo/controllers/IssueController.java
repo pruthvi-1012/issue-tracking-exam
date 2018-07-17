@@ -137,6 +137,7 @@ public class IssueController {
         if (assignee == null) {
             throw new UserNotfoundException("Assignee not found : " + id);
         }
+
         List<Issue> issues = issueRepository.findByAssignee(assignee);
         List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
 
@@ -144,52 +145,51 @@ public class IssueController {
     }
 
     @GetMapping(value = "/reporter/{reporterId}")
-	Page<IssueDto> issuesForReporter(@PathVariable(value = "reporterId") Long id){
+	List<IssueDto> issuesForReporter(@PathVariable(value = "reporterId") Long id){
+
         User reporter = userRepository.findById(id);
-        List<Issue> issues = issueRepository.findByReporter(reporter);
-        List<IssueDto> issueDtos = new ArrayList<>();
-        
-        for (Issue issue : issues) {
-            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
+
+        if (reporter == null) {
+            throw new UserNotfoundException("Assignee not found : " + id);
         }
-	    return new PageImpl<>(issueDtos);
+
+        List<Issue> issues = issueRepository.findByReporter(reporter);
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+
+	    return issueDtos;
     }
     
     @GetMapping(value = "/")
-    Page<IssueDto> issuesBetweenDateCreated(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(value = "fromDate") Date fromDate, 
+    List<IssueDto> issuesBetweenDateCreated(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(value = "fromDate") Date fromDate, 
                                          @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(value = "toDate") Date toDate ) throws Exception{
+
         if (fromDate.before(toDate)){
+
             List<Issue> issues = issueRepository.findByCreatedBetween(fromDate, toDate);
-            List<IssueDto> issueDtos = new ArrayList<>();
-            for (Issue issue : issues) {
-                issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
-            }
-            return new PageImpl<>(issueDtos);
+            List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+
+            return issueDtos;
+
         } else {
             throw new Exception("From date must be earlier than to date");
         }
-
     }
 
     @GetMapping(value = "/created/asc")
-	Page<IssueDto> issuesOrderByCreatedAsc(){
+	List<IssueDto> issuesOrderByCreatedAsc(){
+
         List<Issue> issues = issueRepository.findAllByOrderByCreatedAsc();
-        List<IssueDto> issueDtos = new ArrayList<>();
-        
-        for (Issue issue : issues) {
-            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
-        }
-	    return new PageImpl<>(issueDtos);
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+
+	    return issueDtos;
     }
 
     @GetMapping(value = "/created/desc")
-	Page<IssueDto> issuesOrderByCreatedDesc(){
+	List<IssueDto> issuesOrderByCreatedDesc(){
+
         List<Issue> issues = issueRepository.findAllByOrderByCreatedDesc();
-        List<IssueDto> issueDtos = new ArrayList<>();
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
         
-        for (Issue issue : issues) {
-            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
-        }
-	    return new PageImpl<>(issueDtos);
+	    return issueDtos;
     }
 }
