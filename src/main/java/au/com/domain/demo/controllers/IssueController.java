@@ -98,6 +98,11 @@ public class IssueController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteNote(@PathVariable(value = "id") Long id) {
         Issue issue = issueRepository.findOne(id);
+
+        if (issue == null){
+            throw new IssueNotfoundException("issue id : " + id);
+        }
+        
         List<Comment> comments = commentRepository.findByIssue(issue);
 
         // Delete all comments related to issue before deleting issue
