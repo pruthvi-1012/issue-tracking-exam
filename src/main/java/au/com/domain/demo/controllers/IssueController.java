@@ -10,11 +10,11 @@ import au.com.domain.demo.repository.IssueRepository;
 import au.com.domain.demo.repository.UserRepository;
 import au.com.domain.demo.services.IssueTrackerService;
 import au.com.domain.demo.dto.IssueDto;
+import au.com.domain.demo.exceptions.IssueNotfoundException;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -65,6 +65,10 @@ public class IssueController {
     @GetMapping("/{id}")
     public IssueDto retrieveIssueById(@PathVariable(value = "id") Long id) {
         Issue issue = issueRepository.findOne(id);
+
+        if (issue == null){
+            throw new IssueNotfoundException("issue id : " + id);
+        }
         return issueTrackerService.convertIssueToIssueDTO(issue);
     }
 
@@ -73,6 +77,10 @@ public class IssueController {
                             @Valid @RequestBody IssueDto issueDto) {
 
         Issue issue = issueRepository.findOne(id);
+
+        if (issue == null){
+            throw new IssueNotfoundException("issue id : " + id);
+        }
 
         User assignee = userRepository.findOne(issueDto.getAssignee().getId());
         User reporter = userRepository.findOne(issueDto.getReporter().getId());
