@@ -135,7 +135,7 @@ public class IssueController {
         User assignee = userRepository.findById(id);
 
         if (assignee == null) {
-            throw new UserNotfoundException("Assignee not found : " + id);
+            throw new UserNotfoundException("Reporter not found : " + id);
         }
 
         List<Issue> issues = issueRepository.findByAssignee(assignee);
@@ -189,7 +189,7 @@ public class IssueController {
 
         List<Issue> issues = issueRepository.findAllByOrderByCreatedDesc();
         List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
-        
+
 	    return issueDtos;
     }
 }
