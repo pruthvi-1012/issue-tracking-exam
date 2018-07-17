@@ -11,6 +11,7 @@ import au.com.domain.demo.repository.UserRepository;
 import au.com.domain.demo.services.IssueTrackerService;
 import au.com.domain.demo.dto.IssueDto;
 import au.com.domain.demo.exceptions.IssueNotfoundException;
+import au.com.domain.demo.exceptions.UserNotfoundException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,7 +103,7 @@ public class IssueController {
         if (issue == null){
             throw new IssueNotfoundException("issue id : " + id);
         }
-        
+
         List<Comment> comments = commentRepository.findByIssue(issue);
 
         // Delete all comments related to issue before deleting issue
@@ -129,15 +130,17 @@ public class IssueController {
     }
     
     @GetMapping(value = "/assignee/{assigneeId}")
-	Page<IssueDto> issuesForAssignee(@PathVariable(value = "assigneeId") Long id){
+	List<IssueDto> issuesForAssignee(@PathVariable(value = "assigneeId") Long id){
+
         User assignee = userRepository.findById(id);
-        List<Issue> issues = issueRepository.findByAssignee(assignee);
-        List<IssueDto> issueDtos = new ArrayList<>();
-        
-        for (Issue issue : issues) {
-            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
+
+        if (assignee == null) {
+            throw new UserNotfoundException("Assignee not found : " + id);
         }
-	    return new PageImpl<>(issueDtos);
+        List<Issue> issues = issueRepository.findByAssignee(assignee);
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+
+	    return issueDtos;
     }
 
     @GetMapping(value = "/reporter/{reporterId}")
