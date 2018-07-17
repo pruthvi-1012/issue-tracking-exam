@@ -14,6 +14,8 @@ import au.com.domain.demo.dto.IssueDto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -104,13 +106,9 @@ public class IssueController {
     @GetMapping("/all")
 	public Page<IssueDto> retrieveAllIssuesPeagable(Pageable pageable) {
 
-        List<IssueDto> issueDtos = new ArrayList<>();
-
         Page<Issue> issues = issueRepository.findAll(pageable);
 
-         for (Issue issue : issues) {
-            issueDtos.add(issueTrackerService.convertIssueToIssueDTO(issue));
-         }
+        List<IssueDto> issueDtos = issues.getContent().stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList());
         
         final int currentTotal=pageable.getOffset() + pageable.getPageSize();
 
