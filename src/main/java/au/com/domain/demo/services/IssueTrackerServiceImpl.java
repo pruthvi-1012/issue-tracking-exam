@@ -1,5 +1,6 @@
 package au.com.domain.demo.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class IssueTrackerServiceImpl implements IssueTrackerService {
             issueDto.setCompleted(issue.getCreated() != null ? issue.getCompleted() : null);
             List<Comment> comments = commentRepository.findByIssue(issue);
 
-            List<CommentDto> commentDtos = comments != null ? comments.stream().map(comment -> convertCommentToCommentDTO(comment)).collect(Collectors.toList()) : null ; 
+            List<CommentDto> commentDtos = comments != null ? comments.stream().map(comment -> convertCommentToCommentDTO(comment)).collect(Collectors.toList()) : Collections.emptyList() ; 
 
             issueDto.setComments(commentDtos != null ? commentDtos : null);
 
