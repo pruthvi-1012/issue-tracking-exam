@@ -14,6 +14,7 @@ import au.com.domain.demo.exceptions.IssueNotfoundException;
 import au.com.domain.demo.exceptions.UserNotfoundException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -139,7 +140,7 @@ public class IssueController {
         }
 
         List<Issue> issues = issueRepository.findByAssignee(assignee);
-        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : Collections.emptyList();
 
 	    return issueDtos;
     }
@@ -154,7 +155,7 @@ public class IssueController {
         }
 
         List<Issue> issues = issueRepository.findByReporter(reporter);
-        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : Collections.emptyList();
 
 	    return issueDtos;
     }
@@ -166,7 +167,7 @@ public class IssueController {
         if (fromDate.before(toDate)){
 
             List<Issue> issues = issueRepository.findByCreatedBetween(fromDate, toDate);
-            List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+            List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : Collections.emptyList();
 
             return issueDtos;
 
@@ -179,7 +180,7 @@ public class IssueController {
 	List<IssueDto> issuesOrderByCreatedAsc(){
 
         List<Issue> issues = issueRepository.findAllByOrderByCreatedAsc();
-        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : Collections.emptyList();
 
 	    return issueDtos;
     }
@@ -188,7 +189,7 @@ public class IssueController {
 	List<IssueDto> issuesOrderByCreatedDesc(){
 
         List<Issue> issues = issueRepository.findAllByOrderByCreatedDesc();
-        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : null;
+        List<IssueDto> issueDtos = issues != null ? issues.stream().map(issue -> issueTrackerService.convertIssueToIssueDTO(issue)).collect(Collectors.toList()) : Collections.emptyList();
 
 	    return issueDtos;
     }
