@@ -65,26 +65,17 @@ public class IssueController {
 
     @GetMapping("/{id}")
     public IssueDto retrieveIssueById(@PathVariable(value = "id") Long id) {
-        Issue issue = issueRepository.findOne(id);
-
-        if (issue == null){
-            throw new IssueNotfoundException("issue id : " + id);
-        }
-        return issueTrackerService.convertIssueToIssueDTO(issue);
+        return issueTrackerService.convertIssueToIssueDTO(issueTrackerService.findIssueById(id));
     }
 
     @PutMapping("/{id}")
     public Issue updateNote(@PathVariable(value = "id") Long id,
                             @Valid @RequestBody IssueDto issueDto) {
 
-        Issue issue = issueRepository.findOne(id);
+        Issue issue = issueTrackerService.findIssueById(id);
 
-        if (issue == null){
-            throw new IssueNotfoundException("issue id : " + id);
-        }
-
-        User assignee = userRepository.findOne(issueDto.getAssignee().getId());
-        User reporter = userRepository.findOne(issueDto.getReporter().getId());
+        User assignee = issueTrackerService.findUserById(issueDto.getAssignee().getId());
+        User reporter = issueTrackerService.findUserById(issueDto.getReporter().getId());
 
         issue.setTitle(issueDto.getTitle());
         issue.setDescription(issueDto.getDescription());
