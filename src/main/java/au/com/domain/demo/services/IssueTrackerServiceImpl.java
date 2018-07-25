@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import au.com.domain.demo.dto.CommentDto;
 import au.com.domain.demo.dto.IssueDto;
+import au.com.domain.demo.exceptions.IssueNotfoundException;
+import au.com.domain.demo.exceptions.UserNotfoundException;
 import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.Issue;
 import au.com.domain.demo.model.User;
@@ -33,12 +35,22 @@ public class IssueTrackerServiceImpl implements IssueTrackerService {
 
     @Override
     public User findUserById(long userId) {
-        return userRepository.findById(userId);
+        User user =  userRepository.findById(userId);
+        
+        if(user == null)
+            throw new UserNotfoundException("Reporter not found : " + userId);
+
+        return user;
     }
 
     @Override
     public Issue findIssueById(long issueId) {
-        return issueRepository.findOne(issueId);
+        Issue issue = issueRepository.findOne(issueId);
+
+        if(issue == null)
+            throw new IssueNotfoundException("Issue not found : " + issueId);
+        
+        return issue;
     }
 
     @Override
