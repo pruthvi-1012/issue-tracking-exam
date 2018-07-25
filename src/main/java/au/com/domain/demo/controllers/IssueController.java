@@ -13,7 +13,6 @@ import au.com.domain.demo.dto.IssueDto;
 import au.com.domain.demo.exceptions.IssueNotfoundException;
 import au.com.domain.demo.exceptions.UserNotfoundException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;

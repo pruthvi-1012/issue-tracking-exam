@@ -14,6 +14,7 @@ import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.Issue;
 import au.com.domain.demo.model.User;
 import au.com.domain.demo.repository.CommentRepository;
+import au.com.domain.demo.repository.IssueRepository;
 import au.com.domain.demo.repository.UserRepository;
 
 @Service("issueTrackerService")
@@ -26,10 +27,18 @@ public class IssueTrackerServiceImpl implements IssueTrackerService {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    IssueRepository issueRepository;
+
 
     @Override
     public User findUserById(long userId) {
         return userRepository.findById(userId);
+    }
+
+    @Override
+    public Issue findIssueById(long issueId) {
+        return issueRepository.findOne(issueId);
     }
 
     @Override
