@@ -6,9 +6,11 @@ import au.com.domain.demo.dto.CommentDto;
 import au.com.domain.demo.dto.IssueDto;
 import au.com.domain.demo.model.Comment;
 import au.com.domain.demo.model.Issue;
+import au.com.domain.demo.model.User;
 
 @Component
 public interface IssueTrackerService {
+    public User findUserById(long userId);
     public IssueDto convertIssueToIssueDTO(Issue issue);
     public CommentDto convertCommentToCommentDTO(Comment comment);
 }
